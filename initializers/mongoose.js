@@ -14,7 +14,7 @@ exports.mongoose = function(api, next) {
                             step: String,
                             octave: Number,
                             value: Number
-                        }
+                        },
                         rest: Boolean,
                         grace: Boolean,
                         voice: Boolean,
