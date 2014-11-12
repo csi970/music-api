@@ -37,7 +37,7 @@ exports.mongoose = function(api, next) {
                         minPitch: {
                             step: String,
                             octave: Number
-                        }
+                        },
                         maxPitch: {
                             step: String,
                             octave: Number
