@@ -1,0 +1,27 @@
+{
+  "author": "team@stdy.in",
+  "name": "music-api",
+  "description": "Music API",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "actionhero": "9.0.4",
+    "ws": "latest",
+    "grunt": "latest",
+    "mongoose": "3.8.13",
+    "request": "2.37.0"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "should": "latest"
+  },
+  "scripts": {
+    "help": "actionhero help",
+    "start": "actionhero start",
+    "actionhero": "actionhero",
+    "startCluster": "actionhero startCluster",
+    "test": "mocha -R spec"
+  }
+}
