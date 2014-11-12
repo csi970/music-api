@@ -65,7 +65,7 @@ exports.mongoose = function(api, next) {
 
     api.db = {
         mongoose: mongoose,
-        School: School
+        Score: Score
     };
 
     next();
