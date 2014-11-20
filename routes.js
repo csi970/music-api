@@ -42,19 +42,18 @@ example:
 
 exports.routes = {
   get: [
-    { path: '/scores/:id', action: 'score_get' },
-    { path: '/scores', action: 'score_list' },
+    { path: '/musescore_url/:url', action: 'get_difficulty_for_musescore_url' },
   ],
 
-  post: [
-    { path: '/scores', action: 'score_create' },
-  ],
+  // post: [
+  //   { path: '/scores', action: 'score_create' },
+  // ],
 
-  put: [
-    { path: '/scores/:id', action: 'score_edit' },
-  ],
+  // put: [
+  //   { path: '/scores/:id', action: 'score_edit' },
+  // ],
 
-  delete: [
-    { path: '/scores/:id', action: 'score_delete' },
-  ],
+  // delete: [
+  //   { path: '/scores/:id', action: 'score_delete' },
+  // ],
 };

@@ -1,71 +1,49 @@
 exports.mongoose = function(api, next) {
     var mongoose = require('mongoose');
 
-    var scoreSchema = new mongoose.Schema({
-        parts: [{
-            id: String,
-            name: String,
-            instrument: String,
-            measures: [{
-                chords: [{
-                    notes: [{
-                        pitch: {
-                            stepLetter: String,
-                            step: String,
-                            octave: Number,
-                            value: Number
-                        },
-                        cue: Boolean,
-                        rest: Boolean,
-                        grace: Boolean,
-                        voice: Boolean,
-                        duration: Number,
-                        noteType: String
-                    }]
-                }],
-                divisions: Number,
-                keySignature: String,
-                timeSignature: String,
-                stats: [{
-                    accidentals: Number,
-                    graceNotes: Number,
-                    rests: Number,
-                    chords: Number,
-                    notes: Number,
-                    noteLength: Number,
-                    restLength: Number,
-                    range: {
-                        minPitch: {
-                            step: String,
-                            octave: Number
-                        },
-                        maxPitch: {
-                            step: String,
-                            octave: Number
-                        }
-                    }
-                }]
-            }]
-        }]
-    });
+    var scoreObject = {
+        id: Number,
+        vid: Number,
+        secret: String,
+        uri: String,
+        permalink: String,
+        title: String,
+        description: String,
+        stats: {
+            measures: Number,
+            rests: Number,
+            chords: Number,
+            notes: Number,
+            accidentals: Number,
+            graceNotes: Number,
+            keyChanges: Number,
+            timeChanges: Number,
+            totalSound: Number,
+            totalRest: Number,
+            range: Number
+        },
+        difficulty: Number
+    };
+
+    var scoreSchema = new mongoose.Schema(scoreObject);
 
     if (!scoreSchema.options.toObject) {
         scoreSchema.options.toObject = {};
     }
 
     scoreSchema.options.toObject.transform = function(doc, ret, options) {
-        // ret.uri = api.base_uri + 'scores/' + ret._id;
         delete ret._id;
         delete ret.__v;
     };
 
     var Score = mongoose.model('Score', scoreSchema);
 
-    var uri = 'mongodb://localhost/music';
+    var uri = process.env.MONGOLAB_URI;
     mongoose.connect(uri);
 
     api.db = {
         mongoose: mongoose,
+        scoreObject: scoreObject,
         Score: Score
     };
 
