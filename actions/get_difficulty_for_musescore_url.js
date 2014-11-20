@@ -44,7 +44,7 @@ action.run = function(api, connection, next) {
         url: api.musescore.resolve,
         qs: {
             'oauth_consumer_key': process.env.MUSESCORE_CONSUMER_KEY,
-            'url': connection.params.url
+            'url': decodeURIComponent(connection.params.url)
         },
         followRedirect: true
     }, function(err, response, body) {
