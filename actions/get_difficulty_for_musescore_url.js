@@ -1,14 +1,39 @@
 var action = {};
+
 action.name = 'get_difficulty_for_musescore_url';
+action.version = 1;
 action.description = 'Get the stats and difficulty for a public MuseScore.com url';
 action.inputs = {
-    required: [
+    'required': [
         'url'
     ],
-    optional: []
+    'optional': []
 };
 action.blockedConnectionTypes = [];
-action.outputExample = api.db.scoreObject;
+action.outputExample = {
+    id: 1234,
+    vid: 1234,
+    secret: 'abc123',
+    uri: 'http://example.com',
+    permalink: 'http://example.com',
+    title: 'Music',
+    description: 'A song',
+    stats: {
+        measures: 1,
+        rests: 2,
+        chords: 3,
+        notes: 4,
+        accidentals: 5,
+        graceNotes: 6,
+        keyChanges: 7,
+        timeChanges: 8,
+        totalSound: 9,
+        totalRest: 10,
+        range: 11
+    },
+    difficulty: 0
+};
+
 action.run = function(api, connection, next) {
     // 1. resolve url to API location
     //    - check database for `permalink` matching `url`
