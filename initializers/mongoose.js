@@ -15,6 +15,7 @@ exports.mongoose = function(api, next) {
                             octave: Number,
                             value: Number
                         },
+                        cue: Boolean,
                         rest: Boolean,
                         grace: Boolean,
                         voice: Boolean,
@@ -53,7 +54,7 @@ exports.mongoose = function(api, next) {
     }
 
     scoreSchema.options.toObject.transform = function(doc, ret, options) {
-        ret.uri = api.base_uri + 'scores/' + ret._id;
+        // ret.uri = api.base_uri + 'scores/' + ret._id;
         delete ret._id;
         delete ret.__v;
     };
