@@ -51,20 +51,14 @@ action.run = function(api, connection, next) {
 
     request(options, function(err, response, body) {
 
-        connection.response.options = options;
-        connection.response.err = err;
-        connection.response.response = response;
-        connection.response.body = body;
-
-        next(connection, true);
-        // if (err) {
-        //     connection.response.error = err;
-        //     next(connection, true);
-        // } else {
-        //     var info = JSON.parse(body);
-        //     connection.response.info = info;
-        //     next(connection, true);
-        // }
+        if (err) {
+            connection.response.error = err;
+            next(connection, true);
+        } else {
+            var info = JSON.parse(body);
+            connection.response.info = info;
+            next(connection, true);
+        }
     });
 
     // 2. check whether we have a fresh copy in our database by pinging
@@ -74,7 +68,6 @@ action.run = function(api, connection, next) {
     // 3. use the npm package to compute stats. save to database and
     //    respond
 
-    // next(connection, true);
 };
 
 exports.action = action;
