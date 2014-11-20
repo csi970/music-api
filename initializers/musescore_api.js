@@ -1,4 +1,4 @@
-exports.base_uri = function(api, next) {
+exports.musescore_api = function(api, next) {
     
     api.musescore = {};
     api.musescore.base = 'http://api.musescore.com/services/rest';
