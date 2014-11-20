@@ -1,3 +1,4 @@
+var request = require('request');
 var action = {};
 
 action.name = 'get_difficulty_for_musescore_url';
