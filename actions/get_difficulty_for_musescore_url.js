@@ -39,7 +39,7 @@ action.run = function(api, connection, next) {
     // 1. resolve url to API location
     //    - check database for `permalink` matching `url`
     //    - if we don't have it cached, use the `resolve` method
-    request({
+    var options = {
         method: 'GET',
         url: api.musescore.resolve,
         qs: {
@@ -47,16 +47,24 @@ action.run = function(api, connection, next) {
             'url': decodeURIComponent(connection.params.url)
         },
         followRedirect: true
-    }, function(err, response, body) {
+    };
 
-        if (err) {
-            connection.response.error = err;
-            next(connection, true);
-        } else {
-            var info = JSON.parse(body);
-            connection.response.info = info;
-            next(connection, true);
-        }
+    request(options, function(err, response, body) {
+
+        connection.response.options = options;
+        connection.response.err = err;
+        connection.response.response = response;
+        connection.response.body = body;
+
+        next(connection, true);
+        // if (err) {
+        //     connection.response.error = err;
+        //     next(connection, true);
+        // } else {
+        //     var info = JSON.parse(body);
+        //     connection.response.info = info;
+        //     next(connection, true);
+        // }
     });
 
     // 2. check whether we have a fresh copy in our database by pinging
@@ -66,7 +74,7 @@ action.run = function(api, connection, next) {
     // 3. use the npm package to compute stats. save to database and
     //    respond
 
-    next(connection, true);
+    // next(connection, true);
 };
 
 exports.action = action;
