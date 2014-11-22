@@ -5,7 +5,7 @@ exports.task = {
     frequency: 1000 * 60 * 45,
     run: function(api, params, next) {
         var request = require('request');
-        request('http://api.stdy.in/', function() {
+        request('https://music-api.herokuapp.com/', function() {
             console.log('Pinged the API');
         });
         next();
