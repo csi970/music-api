@@ -39,7 +39,7 @@ action.run = function(api, connection, next) {
     // 1. resolve url to API location
     //    - check database for `permalink` matching `url`
     //    - if we don't have it cached, use the `resolve` method
-    var options = {
+    request({
         method: 'GET',
         url: api.musescore.resolve,
         qs: {
@@ -47,27 +47,45 @@ action.run = function(api, connection, next) {
             'url': decodeURIComponent(connection.params.url)
         },
         followRedirect: true
-    };
-
-    request(options, function(err, response, body) {
+    }, function(err, response, body) {
 
         if (err) {
-            connection.response.error = err;
             next(connection, true);
         } else {
             var info = JSON.parse(body);
-            connection.response.info = info;
-            next(connection, true);
+
+            // 2. Check whether we have a fresh copy in our database by comparing the `vid`s
+            api.db.Score.findOne({
+                id: info.id,
+                vid: info.vid
+            }, function(err, doc) {
+
+                // see if there was an error
+                if (err) {
+                    connection.response.error = err;
+                    next(connection, true);
+                } else {
+
+                    // see if we have it in the database
+                    if (doc) {
+                        // we do, so we'll just return that
+                        connection.response = doc.toObject();
+                        next(connection, true);
+                    } else {
+                        // we need to grab the MusicXML file and process it
+
+                        request({
+                            method: 'GET',
+                            url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
+                        }, function(err, response, body) {
+                            connection.response.status = 'Getting MusicXML file';
+                            next(connection, true);
+                        });
+                    }
+                }
+            });
         }
     });
-
-    // 2. check whether we have a fresh copy in our database by pinging
-    //    the MuseScore API and comparing the `vid`s
-    //    - if we do, respond & return that
-
-    // 3. use the npm package to compute stats. save to database and
-    //    respond
-
 };
 
 exports.action = action;
