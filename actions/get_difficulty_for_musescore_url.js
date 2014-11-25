@@ -78,8 +78,40 @@ action.run = function(api, connection, next) {
                             method: 'GET',
                             url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
                         }, function(err, response, body) {
-                            connection.response.status = 'Getting MusicXML file';
-                            next(connection, true);
+                            var score = new api.mongoose.Score({
+                                id: info.id,
+                                vid: info.vid,
+                                secret: info.secret,
+                                uri: info.uri,
+                                permalink: info.permalink,
+                                title: info.title,
+                                description: info.description,
+                                stats: {
+                                    measures: 0,
+                                    chords: 0,
+                                    rests: 0,
+                                    notes: 0,
+                                    accidentals: 0,
+                                    graceNotes: 0,
+                                    keyChanges: 0,
+                                    timeChanges: 0,
+                                    totalSound: 0,
+                                    totalRest: 0,
+                                    range: 0
+                                },
+                                difficulty: 0
+                            });
+
+                            score.save(function(err, doc) {
+                                if (err) {
+                                    connection.response.error = err;
+                                    next(connection, true);
+                                } else {
+                                    connection.response = doc.toObject();
+                                    connection.response._fresh = true;
+                                    next(connection, true);
+                                }
+                            });
                         });
                     }
                 }
