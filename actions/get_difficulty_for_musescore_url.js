@@ -78,7 +78,7 @@ action.run = function(api, connection, next) {
                             method: 'GET',
                             url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
                         }, function(err, response, body) {
-                            var score = new api.mongoose.Score({
+                            var score = new api.db.Score({
                                 id: info.id,
                                 vid: info.vid,
                                 secret: info.secret,
