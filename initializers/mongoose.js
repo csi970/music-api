@@ -9,7 +9,7 @@ exports.mongoose = function(api, next) {
         permalink: String,
         title: String,
         description: String,
-        stats: {
+        parts: [{
             measures: Number,
             rests: Number,
             chords: Number,
@@ -21,8 +21,7 @@ exports.mongoose = function(api, next) {
             totalSound: Number,
             totalRest: Number,
             range: Number
-        },
-        difficulty: Number
+        }]
     };
 
     var scoreSchema = new mongoose.Schema(scoreObject);
@@ -38,7 +37,7 @@ exports.mongoose = function(api, next) {
 
     var Score = mongoose.model('Score', scoreSchema);
 
-    var uri = process.env.MONGOLAB_URI;
+    var uri = process.env.MONGOLAB_URI || 'mongodb://localhost/music';
     mongoose.connect(uri);
 
     api.db = {
