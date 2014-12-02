@@ -1,5 +1,4 @@
 var request = require('request');
-var music = require('music-analysis');
 var action = {};
 
 action.name = 'get_difficulty_for_musescore_url';
@@ -83,7 +82,7 @@ action.run = function(api, connection, next) {
                                 connection.response.error = err;
                                 next(connection, true);
                             } else {
-                                music.parseMXL(body, function(score) {
+                                require('music-analysis').parseMXL(body, function(score) {
                                     var score_for_db = {
                                         id: info.id,
                                         vid: info.vid,
