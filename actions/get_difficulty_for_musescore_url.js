@@ -95,7 +95,7 @@ action.run = function(api, connection, next) {
                                     };
 
                                     score_for_db.parts = score.parts.map(function(p) {
-                                        p.getRawStats();
+                                        return p.getRawStats();
                                     });
 
                                     new api.db.Score(score_for_db).save(function(err, doc) {
