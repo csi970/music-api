@@ -42,7 +42,7 @@ example:
 
 exports.routes = {
   get: [
-    { path: '/musescore_url/:url', action: 'get_difficulty_for_musescore_url' },
+    // { path: '/musescore_url/:url', action: 'get_difficulty_for_musescore_url' },
   ],
 
   // post: [
