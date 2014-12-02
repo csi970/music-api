@@ -10,7 +10,7 @@
     "actionhero": "9.0.4",
     "ws": "latest",
     "grunt": "latest",
-    "music-analysis": "csi970/prototype",
+    "music-analysis": "latest",
     "mongoose": "3.8.13",
     "request": "2.37.0"
   },
