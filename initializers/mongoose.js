@@ -33,6 +33,7 @@ exports.mongoose = function(api, next) {
     scoreSchema.options.toObject.transform = function(doc, ret, options) {
         delete ret._id;
         delete ret.__v;
+        delete ret.secret;
     };
 
     var Score = mongoose.model('Score', scoreSchema);
