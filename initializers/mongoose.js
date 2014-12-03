@@ -20,7 +20,10 @@ exports.mongoose = function(api, next) {
             timeChanges: Number,
             totalSound: Number,
             totalRest: Number,
-            range: Number
+            range: {
+                minPitch: String,
+                maxPitch: String
+            }
         }]
     };
 
