@@ -77,41 +77,42 @@ action.run = function(api, connection, next) {
 
                         request({
                             method: 'GET',
+                            encoding: 'binary',
                             url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
                         }, function(err, response, body) {
                             if (err) {
                                 connection.response.error = err;
                                 next(connection, true);
                             } else {
-                                connection.response.response = response;
-                                next(connection, true);
+                                // connection.response.response = response;
+                                // next(connection, true);
 
-                                // api.music.parseMXL(body, function(score) {
-                                //     var score_for_db = {
-                                //         id: info.id,
-                                //         vid: info.vid,
-                                //         secret: info.secret,
-                                //         uri: info.uri,
-                                //         permalink: info.permalink,
-                                //         title: info.title,
-                                //         description: info.description
-                                //     };
+                                api.music.parseMXL(body, function(score) {
+                                    var score_for_db = {
+                                        id: info.id,
+                                        vid: info.vid,
+                                        secret: info.secret,
+                                        uri: info.uri,
+                                        permalink: info.permalink,
+                                        title: info.title,
+                                        description: info.description
+                                    };
 
-                                //     score_for_db.parts = score.parts.map(function(p) {
-                                //         return p.getRawStats();
-                                //     });
+                                    score_for_db.parts = score.parts.map(function(p) {
+                                        return p.getRawStats();
+                                    });
 
-                                //     new api.db.Score(score_for_db).save(function(err, doc) {
-                                //         if (err) {
-                                //             connection.response.error = err;
-                                //             next(connection, true);
-                                //         } else {
-                                //             connection.response = doc.toObject();
-                                //             connection.response._fresh = true;
-                                //             next(connection, true);
-                                //         }
-                                //     });
-                                // });
+                                    new api.db.Score(score_for_db).save(function(err, doc) {
+                                        if (err) {
+                                            connection.response.error = err;
+                                            next(connection, true);
+                                        } else {
+                                            connection.response = doc.toObject();
+                                            connection.response._fresh = true;
+                                            next(connection, true);
+                                        }
+                                    });
+                                });
                             }
                         });
                     }
