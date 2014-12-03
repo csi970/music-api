@@ -83,7 +83,7 @@ action.run = function(api, connection, next) {
                                 connection.response.error = err;
                                 next(connection, true);
                             } else {
-                                connection.response.body = body;
+                                connection.response.response = response;
                                 next(connection, true);
 
                                 // api.music.parseMXL(body, function(score) {
