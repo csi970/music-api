@@ -9,18 +9,22 @@ exports.mongoose = function(api, next) {
         permalink: String,
         title: String,
         description: String,
+        lastModified: Number,
         parts: [{
-            measures: Number,
-            rests: Number,
-            chords: Number,
-            notes: Number,
-            accidentals: Number,
-            graceNotes: Number,
+            numMeasures: Number,
+            numRests: Number,
+            numChords: Number,
+            numNotes: Number,
+            numAccidentals: Number,
+            numGraceNotes: Number,
             keyChanges: Number,
             timeChanges: Number,
             totalSound: Number,
             totalRest: Number,
-            range: Number
+            range: {
+                minPitch: String,
+                maxPitch: String
+            }
         }]
     };
 
