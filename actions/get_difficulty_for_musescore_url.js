@@ -19,18 +19,22 @@ action.outputExample = {
     permalink: 'http://example.com',
     title: 'Music',
     description: 'A song',
+    lastModified: 1417629854,
     parts: [{
-        measures: 1,
-        rests: 2,
-        chords: 3,
-        notes: 4,
-        accidentals: 5,
-        graceNotes: 6,
+        numMeasures: 1,
+        numRests: 2,
+        numChords: 3,
+        numNotes: 4,
+        numAccidentals: 5,
+        numGraceNotes: 6,
         keyChanges: 7,
         timeChanges: 8,
         totalSound: 9,
         totalRest: 10,
-        range: 11
+        range: {
+            minPitch: "C3",
+            maxPitch: "C7"
+        }
     }]
 };
 
@@ -95,7 +99,8 @@ action.run = function(api, connection, next) {
                                         uri: info.uri,
                                         permalink: info.permalink,
                                         title: info.title,
-                                        description: info.description
+                                        description: info.description,
+                                        lastModified: info.dates.lastupdate
                                     };
 
                                     score_for_db.parts = score.parts.map(function(p) {

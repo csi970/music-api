@@ -9,6 +9,7 @@ exports.mongoose = function(api, next) {
         permalink: String,
         title: String,
         description: String,
+        lastModified: Number,
         parts: [{
             numMeasures: Number,
             numRests: Number,
