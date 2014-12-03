@@ -73,43 +73,48 @@ action.run = function(api, connection, next) {
                     } else {
                         // we need to grab the MusicXML file and process it
 
-                        request({
-                            method: 'GET',
-                            url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
-                        }, function(err, response, body) {
+                        var url = api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl';
 
-                            if (err) {
-                                connection.response.error = err;
-                                next(connection, true);
-                            } else {
-                                api.music.parseMXL(body, function(score) {
-                                    var score_for_db = {
-                                        id: info.id,
-                                        vid: info.vid,
-                                        secret: info.secret,
-                                        uri: info.uri,
-                                        permalink: info.permalink,
-                                        title: info.title,
-                                        description: info.description
-                                    };
+                        connection.response.mxl_file_url = url;
+                        next(connection, true);
 
-                                    score_for_db.parts = score.parts.map(function(p) {
-                                        return p.getRawStats();
-                                    });
+                        // request({
+                        //     method: 'GET',
+                        //     url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
+                        // }, function(err, response, body) {
 
-                                    new api.db.Score(score_for_db).save(function(err, doc) {
-                                        if (err) {
-                                            connection.response.error = err;
-                                            next(connection, true);
-                                        } else {
-                                            connection.response = doc.toObject();
-                                            connection.response._fresh = true;
-                                            next(connection, true);
-                                        }
-                                    });
-                                });
-                            }
-                        });
+                        //     if (err) {
+                        //         connection.response.error = err;
+                        //         next(connection, true);
+                        //     } else {
+                        //         api.music.parseMXL(body, function(score) {
+                        //             var score_for_db = {
+                        //                 id: info.id,
+                        //                 vid: info.vid,
+                        //                 secret: info.secret,
+                        //                 uri: info.uri,
+                        //                 permalink: info.permalink,
+                        //                 title: info.title,
+                        //                 description: info.description
+                        //             };
+
+                        //             score_for_db.parts = score.parts.map(function(p) {
+                        //                 return p.getRawStats();
+                        //             });
+
+                        //             new api.db.Score(score_for_db).save(function(err, doc) {
+                        //                 if (err) {
+                        //                     connection.response.error = err;
+                        //                     next(connection, true);
+                        //                 } else {
+                        //                     connection.response = doc.toObject();
+                        //                     connection.response._fresh = true;
+                        //                     next(connection, true);
+                        //                 }
+                        //             });
+                        //         });
+                        //     }
+                        // });
                     }
                 }
             });
