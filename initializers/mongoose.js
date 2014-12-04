@@ -11,6 +11,7 @@ exports.mongoose = function(api, next) {
         description: String,
         lastModified: Number,
         parts: [{
+            difficulty: Number,
             numMeasures: Number,
             numRests: Number,
             numChords: Number,
@@ -18,7 +19,9 @@ exports.mongoose = function(api, next) {
             numAccidentals: Number,
             numGraceNotes: Number,
             keyChanges: Number,
+            keyUsage: Array,
             timeChanges: Number,
+            timeSigUsage: Array,
             totalSound: Number,
             totalRest: Number,
             range: {
