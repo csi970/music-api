@@ -107,6 +107,9 @@ action.run = function(api, connection, next) {
                                     score_for_db.parts = score.parts.map(function(p) {
                                         var s = p.getRawStats();
                                         s.difficulty = p.getDifficulty();
+                                        s.partId = p.partId;
+                                        s.instrument = p.instrument;
+                                        s.partName = p.partName;
                                         return s;
                                     });
 
