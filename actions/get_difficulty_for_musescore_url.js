@@ -1,4 +1,5 @@
 var request = require('request');
+var music = require('music-analysis');
 var action = {};
 
 action.name = 'get_difficulty_for_musescore_url';
@@ -14,13 +15,16 @@ action.blockedConnectionTypes = [];
 action.outputExample = {
     id: 1234,
     vid: 1234,
-    secret: 'abc123',
-    uri: 'http://example.com',
-    permalink: 'http://example.com',
+    uri: 'http://api.musescore.com/services/rest/score/1234',
+    permalink: 'http://musescore.com/score/1234',
     title: 'Music',
     description: 'A song',
     lastModified: 1417629854,
     parts: [{
+        instrument: 'Violin',
+        partId: 'P1',
+        partName: 'Violin 1',
+        difficulty: 2.5,
         numMeasures: 1,
         numRests: 2,
         numChords: 3,
