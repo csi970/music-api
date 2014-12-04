@@ -42,46 +42,6 @@ action.outputExample = {
     }]
 };
 
-var processScoreFile = function(err, response, body) {
-    if (err) {
-        connection.response.error = err;
-        next(connection, true);
-    } else {
-        music.parseMXL(body, function(score) {
-            var score_for_db = {
-                id: info.id,
-                vid: info.vid,
-                secret: info.secret,
-                uri: info.uri,
-                permalink: info.permalink,
-                title: info.title,
-                description: info.description,
-                lastModified: info.dates.lastupdate
-            };
-
-            score_for_db.parts = score.parts.map(function(p) {
-                var s = p.getRawStats();
-                s.difficulty = p.getDifficulty();
-                s.partId = p.partId;
-                s.instrument = p.instrument;
-                s.partName = p.partName;
-                return s;
-            });
-
-            new api.db.Score(score_for_db).save(function(err, doc) {
-                if (err) {
-                    connection.response.error = err;
-                    next(connection, true);
-                } else {
-                    connection.response = doc.toObject();
-                    connection.response._fresh = true;
-                    next(connection, true);
-                }
-            });
-        });
-    }
-};
-
 action.run = function(api, connection, next) {
     // 1. resolve url to API location
     //    - check database for `permalink` matching `url`
@@ -127,7 +87,45 @@ action.run = function(api, connection, next) {
                             method: 'GET',
                             encoding: 'binary',
                             url: api.musescore.static + '/' + info.id + '/' + info.secret + '/score.mxl'
-                        }, processScoreFile);
+                        }, function(err, response, body) {
+                            if (err) {
+                                connection.response.error = err;
+                                next(connection, true);
+                            } else {
+                                music.parseMXL(body, function(score) {
+                                    var score_for_db = {
+                                        id: info.id,
+                                        vid: info.vid,
+                                        secret: info.secret,
+                                        uri: info.uri,
+                                        permalink: info.permalink,
+                                        title: info.title,
+                                        description: info.description,
+                                        lastModified: info.dates.lastupdate
+                                    };
+
+                                    score_for_db.parts = score.parts.map(function(p) {
+                                        var s = p.getRawStats();
+                                        s.difficulty = p.getDifficulty();
+                                        s.partId = p.partId;
+                                        s.instrument = p.instrument;
+                                        s.partName = p.partName;
+                                        return s;
+                                    });
+
+                                    new api.db.Score(score_for_db).save(function(err, doc) {
+                                        if (err) {
+                                            connection.response.error = err;
+                                            next(connection, true);
+                                        } else {
+                                            connection.response = doc.toObject();
+                                            connection.response._fresh = true;
+                                            next(connection, true);
+                                        }
+                                    });
+                                });
+                            }
+                        });
                     }
                 }
             });
