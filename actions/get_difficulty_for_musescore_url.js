@@ -92,7 +92,7 @@ action.run = function(api, connection, next) {
                                 connection.response.error = err;
                                 next(connection, true);
                             } else {
-                                api.music.parseMXL(body, function(score) {
+                                music.parseMXL(body, function(score) {
                                     var score_for_db = {
                                         id: info.id,
                                         vid: info.vid,
